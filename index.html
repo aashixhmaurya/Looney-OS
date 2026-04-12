@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LooneyOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="boot-screen">
+        <div class="brand-logo">
+            <div class="logo-mark">
+                <div class="l-vert"></div>
+                <div class="l-horiz"></div>
+                <div class="l-end"></div>
+                <div class="l-dot"></div>
+            </div>
+            <div class="logo-text">LOONEY OS</div>
+        </div>
+    </div>
+
+    <div id="desktop">
+        <div id="desktop-icons"></div>
+        <div id="window-container"></div>
+
+        <div id="indicator-max" class="drag-indicator"></div>
+        <div id="indicator-close" class="drag-indicator">
+            <svg viewBox="0 0 24 24"
+                style="width: 40px; height: 40px; stroke: var(--black); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none;">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+    </div>
+
+    <div id="taskbar">
+        <button id="start-btn">
+            <div class="mini-logo">
+                <div class="mini-l-vert"></div>
+                <div class="mini-l-horiz"></div>
+                <div class="mini-l-end"></div>
+                <div class="mini-l-dot"></div>
+            </div>
+            Looney
+        </button>
+        <div id="taskbar-apps"></div>
+        <div id="clock">12:00 PM</div>
+    </div>
+
+    <div id="global-drop-overlay">
+        🖼️ Wallpaper yahan drop karein!
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
