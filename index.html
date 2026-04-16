@@ -654,7 +654,16 @@
             flex: 1;
             gap: 10px;
             margin-left: 15px;
+            margin-right: 15px;
+            /* Clock se thodi doori banaye rakhne ke liye */
             overflow-x: auto;
+            scrollbar-width: none;
+            /* Firefox me scrollbar chhupane ke liye */
+        }
+
+        #taskbar-apps::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Edge/Safari me ajeeb scrollbar line chhupane ke liye */
         }
 
         .taskbar-item {
@@ -669,9 +678,10 @@
             align-items: center;
             gap: 5px;
             max-width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            flex: 0 1 auto;
+            /* Jagah kam hone par smoothly sikudne (shrink) ke liye */
+            min-width: 36px;
+            /* Icon hamesha bacha rahega chahe kitna bhi chhota ho */
             color: var(--black);
         }
 
@@ -683,6 +693,15 @@
             stroke-linecap: round;
             stroke-linejoin: round;
             fill: none;
+            flex-shrink: 0;
+            /* Icon kabhi nahi sikudega */
+        }
+
+        .taskbar-item span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* Shrink hone pe automatically "..." lagane ke liye */
         }
 
         .taskbar-item.active {
@@ -891,17 +910,21 @@
         }
 
         .calc-display {
-            height: 60px;
+            height: 65px;
+            /* Halka sa height bada diya hai */
             border: 2px solid var(--black);
             border-radius: var(--radius-sm);
             margin-bottom: 15px;
             font-size: 2rem;
-            text-align: right;
-            padding: 10px;
+            padding: 10px 15px;
             font-family: 'Architects Daughter', cursive;
             background: #f9f9f9;
             box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            /* Text ko vertical center aur right me align karne ka fix */
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
         }
 
         .calc-grid {
@@ -1950,7 +1973,8 @@
 
                 const taskItem = document.createElement('div');
                 taskItem.className = `taskbar-item ${state.activeAppId === appId && !winData.minimized ? 'active' : ''}`;
-                taskItem.innerHTML = `${appData.icon} ${appData.title}`;
+                // Title ko span me daala taaki shrink aur ellipsis perfectly kaam kare
+                taskItem.innerHTML = `${appData.icon} <span>${appData.title}</span>`;
 
                 let isDragging = false;
                 let startX, startY;
@@ -2881,28 +2905,80 @@
             const buttons = container.querySelectorAll('.calc-btn');
             let currentExp = '';
 
+            function processInput(val) {
+                if (val === 'C') {
+                    currentExp = '';
+                    display.textContent = '0';
+                } else if (val === 'Backspace') {
+                    currentExp = currentExp.toString().slice(0, -1);
+                    display.textContent = currentExp === '' ? '0' : currentExp;
+                } else if (val === '=') {
+                    try {
+                        if (currentExp !== '') {
+                            // Safe basic eval for calculator
+                            currentExp = String(Function('"use strict";return (' + currentExp + ')')());
+                            display.textContent = currentExp;
+                        }
+                    } catch (err) {
+                        display.textContent = 'Error';
+                        currentExp = '';
+                    }
+                } else {
+                    if (currentExp === '' && val !== '.') currentExp = val;
+                    else currentExp += val;
+                    display.textContent = currentExp;
+                }
+            }
+
+            // Mouse Clicks Handlers
             buttons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const val = e.target.textContent;
-                    if (val === 'C') {
-                        currentExp = '';
-                        display.textContent = '0';
-                    } else if (val === '=') {
-                        try {
-                            // Safe basic eval for calculator
-                            currentExp = Function('"use strict";return (' + currentExp + ')')();
-                            display.textContent = currentExp;
-                        } catch (err) {
-                            display.textContent = 'Error';
-                            currentExp = '';
-                        }
-                    } else {
-                        if (currentExp === '' && val !== '.') currentExp = val;
-                        else currentExp += val;
-                        display.textContent = currentExp;
-                    }
+                    processInput(e.target.textContent);
                 });
             });
+
+            // Keyboard Support Handlers
+            const handleKeyDown = (e) => {
+                // Garbage collection: agar calculator band ho gaya, toh event listener hata do
+                if (!document.body.contains(container)) {
+                    window.removeEventListener('keydown', handleKeyDown);
+                    return;
+                }
+
+                // Sirf tabhi kaam karega jab Calculator window active ho
+                if (state.activeAppId !== 'calc') return;
+
+                const key = e.key;
+                const validNumbersAndOperators = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/'];
+
+                if (validNumbersAndOperators.includes(key)) {
+                    processInput(key);
+                } else if (key === 'Enter' || key === '=') {
+                    e.preventDefault(); // Enter dabane pe koi aur button auto-click na ho
+                    processInput('=');
+                } else if (key === 'Escape' || key.toLowerCase() === 'c') {
+                    processInput('C');
+                } else if (key === 'Backspace') {
+                    processInput('Backspace');
+                }
+
+                // Visual Feedback: Jab keyboard dabayein toh on-screen button dabta hua dikhe
+                let btnText = key === 'Enter' ? '=' : (key.toLowerCase() === 'c' || key === 'Escape' ? 'C' : key);
+                buttons.forEach(btn => {
+                    if (btn.textContent === btnText) {
+                        btn.style.background = '#e0e0e0';
+                        btn.style.transform = 'translate(2px, 2px)';
+                        btn.style.boxShadow = '0px 0px 0px var(--black)';
+                        setTimeout(() => {
+                            btn.style.background = 'var(--white)';
+                            btn.style.transform = '';
+                            btn.style.boxShadow = '2px 2px 0px var(--black)';
+                        }, 100);
+                    }
+                });
+            };
+
+            window.addEventListener('keydown', handleKeyDown);
         }
 
         // --- NEW APP: Doodle Pad ---
