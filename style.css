@@ -28,6 +28,18 @@
     user-select: none;
 }
 
+::selection {
+    background-color: #999999;
+    color: #000000;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+::-moz-selection {
+    background-color: #999999;
+    color: #000000;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
 body {
     overflow: hidden;
     background-color: var(--white);
@@ -36,6 +48,50 @@ body {
     display: flex;
     flex-direction: column;
     touch-action: none;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M6,6 L8,28 L13,23 L18,32 L22,30 L16,21 L25,19 Z' fill='white' stroke='black' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'/><path d='M5,5 L9,29 L12,24 L17,33 L23,31 L17,22 L26,20 Z' fill='none' stroke='black' stroke-width='1' stroke-linejoin='round' stroke-linecap='round'/><path d='M7,7 L7,27 L14,22 L19,31 L21,29 L15,20 L24,18 Z' fill='none' stroke='black' stroke-width='1.5' stroke-linejoin='round' stroke-linecap='round'/></svg>") 6 6, default;
+}
+
+textarea,
+input[type="text"],
+.term-input,
+.new-folder-input {
+    cursor: text !important;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+}
+
+.term-output,
+.term-output * {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    cursor: text;
+}
+
+button,
+.looney-btn,
+.desktop-icon,
+.taskbar-item,
+#start-btn,
+.folder,
+.cal-day:not(.empty),
+.cal-prev,
+.cal-next,
+.music-btn,
+.settings-nav-item,
+.drop-zone,
+.context-item,
+.calc-btn,
+.color-btn,
+.size-btn {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M16,16 V5 C16,3 19,3 19,5 V14 C20,13 22,13 23,14 C24,13 26,13 27,15 C28,14 30,15 30,17 V22 C30,27 26,31 21,31 C16,31 13,27 12,23 L9,20 C8,19 9,17 11,18 L14,20 Z' fill='white' stroke='black' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'/><path d='M15,15 V4 C15,2 18,2 18,4 V13 C19,12 21,12 22,13 C23,12 25,12 26,14 C27,13 29,14 29,16 V21 C29,26 25,30 20,30 C15,30 12,26 11,22 L8,19 C7,18 8,16 10,17 L13,19 Z' fill='none' stroke='black' stroke-width='1' stroke-linejoin='round' stroke-linecap='round'/></svg>") 16 5, pointer !important;
+}
+
+.sketchy-slider::-webkit-slider-thumb {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M16,16 V5 C16,3 19,3 19,5 V14 C20,13 22,13 23,14 C24,13 26,13 27,15 C28,14 30,15 30,17 V22 C30,27 26,31 21,31 C16,31 13,27 12,23 L9,20 C8,19 9,17 11,18 L14,20 Z' fill='white' stroke='black' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'/><path d='M15,15 V4 C15,2 18,2 18,4 V13 C19,12 21,12 22,13 C23,12 25,12 26,14 C27,13 29,14 29,16 V21 C29,26 25,30 20,30 C15,30 12,26 11,22 L8,19 C7,18 8,16 10,17 L13,19 Z' fill='none' stroke='black' stroke-width='1' stroke-linejoin='round' stroke-linecap='round'/></svg>") 16 5, pointer !important;
+}
+
+.sketchy-slider::-moz-range-thumb {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M16,16 V5 C16,3 19,3 19,5 V14 C20,13 22,13 23,14 C24,13 26,13 27,15 C28,14 30,15 30,17 V22 C30,27 26,31 21,31 C16,31 13,27 12,23 L9,20 C8,19 9,17 11,18 L14,20 Z' fill='white' stroke='black' stroke-width='2.5' stroke-linejoin='round' stroke-linecap='round'/><path d='M15,15 V4 C15,2 18,2 18,4 V13 C19,12 21,12 22,13 C23,12 25,12 26,14 C27,13 29,14 29,16 V21 C29,26 25,30 20,30 C15,30 12,26 11,22 L8,19 C7,18 8,16 10,17 L13,19 Z' fill='none' stroke='black' stroke-width='1' stroke-linejoin='round' stroke-linecap='round'/></svg>") 16 5, pointer !important;
 }
 
 ::-webkit-scrollbar {
@@ -56,6 +112,46 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--black);
+}
+
+#context-menu {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(0, 0, 0, 0.7);
+    border-radius: 15px 255px 10px 225px / 225px 10px 255px 15px;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 100000;
+    min-width: 150px;
+}
+
+.context-item {
+    padding: 6px 10px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.85);
+    border-radius: var(--radius-sm);
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.context-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--black);
+    transform: translateX(3px);
+}
+
+.context-item svg {
+    stroke: rgba(0, 0, 0, 0.85);
+}
+
+.context-item:hover svg {
+    stroke: var(--black);
 }
 
 #boot-screen {
@@ -197,12 +293,26 @@ body {
 #desktop {
     flex: 1;
     position: relative;
+    background-color: var(--white);
+    overflow: hidden;
+    display: block;
+    z-index: 1;
+}
+
+#desktop::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: var(--wallpaper);
     background-size: cover;
     background-position: center;
-    overflow: hidden;
-    display: none;
-    z-index: 1;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 0.9;
+    pointer-events: none;
 }
 
 #desktop-icons {
@@ -213,6 +323,9 @@ body {
     padding: 1rem;
     height: 100%;
     align-content: start;
+    position: relative;
+    overflow-y: auto;
+    padding-bottom: 80px;
 }
 
 .desktop-icon {
@@ -223,8 +336,9 @@ body {
     padding: 10px;
     border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     text-align: center;
+    z-index: 1;
 }
 
 .desktop-icon:hover {
@@ -246,6 +360,7 @@ body {
     margin-bottom: 5px;
     transition: transform 0.2s;
     box-shadow: 2px 2px 0px var(--black);
+    pointer-events: none;
 }
 
 .desktop-icon:nth-child(1) .emoji {
@@ -278,6 +393,26 @@ body {
     transform: skewX(-2deg) rotate(-1deg);
 }
 
+.desktop-icon:nth-child(7) .emoji {
+    border-radius: 20px 255px 10px 225px / 255px 10px 225px 20px;
+    transform: skewY(1deg);
+}
+
+.desktop-icon:nth-child(8) .emoji {
+    border-radius: 255px 10px 225px 20px / 10px 225px 20px 255px;
+    transform: skewX(1deg);
+}
+
+.desktop-icon:nth-child(9) .emoji {
+    border-radius: 15px 225px 20px 255px / 255px 15px 225px 20px;
+    transform: skewY(-1deg) skewX(2deg);
+}
+
+.desktop-icon:nth-child(10) .emoji {
+    border-radius: 200px 20px 200px 15px / 15px 200px 20px 200px;
+    transform: skewY(1deg) skewX(-1deg);
+}
+
 .desktop-icon .emoji svg {
     width: 32px;
     height: 32px;
@@ -296,6 +431,7 @@ body {
     background: transparent;
     border: none;
     box-shadow: none;
+    pointer-events: none;
 }
 
 .window {
@@ -311,6 +447,8 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transform: scale(1);
+    opacity: 1;
     animation: windowPop 0.3s ease-out backwards;
     min-width: 300px;
     min-height: 200px;
@@ -323,7 +461,9 @@ body {
 
 .window.maximized {
     width: 100% !important;
-    height: calc(100% - 60px) !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
     top: 0 !important;
     left: 0 !important;
     border-radius: 0;
@@ -406,6 +546,19 @@ body {
     color: var(--black);
 }
 
+.resize-handle {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    cursor: se-resize;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #taskbar {
     height: 60px;
     background: var(--white);
@@ -414,7 +567,6 @@ body {
     align-items: center;
     padding: 0 10px;
     z-index: 999;
-    display: none;
     transition: background-color 0.2s, border-width 0.2s;
 }
 
@@ -454,7 +606,13 @@ body {
     flex: 1;
     gap: 10px;
     margin-left: 15px;
+    margin-right: 15px;
     overflow-x: auto;
+    scrollbar-width: none;
+}
+
+#taskbar-apps::-webkit-scrollbar {
+    display: none;
 }
 
 .taskbar-item {
@@ -469,9 +627,8 @@ body {
     align-items: center;
     gap: 5px;
     max-width: 150px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex: 0 1 auto;
+    min-width: 36px;
     color: var(--black);
 }
 
@@ -483,6 +640,13 @@ body {
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
+    flex-shrink: 0;
+}
+
+.taskbar-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .taskbar-item.active {
@@ -500,6 +664,7 @@ body {
     font-weight: bold;
     box-shadow: 2px 2px 0px var(--black);
     color: var(--black);
+    letter-spacing: 2px;
 }
 
 .looney-btn {
@@ -592,11 +757,238 @@ body {
     outline: none;
 }
 
-.app-files {
+.app-doodle {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    gap: 10px;
+}
+
+.doodle-tools {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.doodle-viewport {
+    flex: 1;
+    overflow: hidden;
+    border: 2px solid var(--black);
+    border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;
+    background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.03) 10px, rgba(0, 0, 0, 0.03) 12px);
+    position: relative;
+}
+
+.doodle-canvas {
+    background: var(--white);
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+    cursor: crosshair;
+}
+
+.doodle-palette {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.color-btn {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--black);
+    border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--black);
+    transition: transform 0.1s;
+}
+
+.color-btn.active {
+    transform: scale(1.2);
+    border-width: 3px;
+    box-shadow: 1px 1px 0px var(--black);
+}
+
+.size-btn {
+    background: transparent;
+    border: 2px solid var(--black);
+    cursor: pointer;
+    border-radius: 50% 40% 60% 40% / 40% 60% 50% 50%;
+    box-shadow: 2px 2px 0px var(--black);
+    transition: all 0.1s;
+    padding: 0;
+    margin: 0 4px;
+}
+
+.size-btn.active {
+    background: var(--black);
+    box-shadow: none;
+    transform: translate(2px, 2px);
+}
+
+.app-calc {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 15px;
+    background: var(--white);
+}
+
+.calc-display {
+    height: 65px;
+    border: 2px solid var(--black);
+    border-radius: var(--radius-sm);
+    margin-bottom: 15px;
+    font-size: 2rem;
+    padding: 10px 15px;
+    font-family: 'Architects Daughter', cursive;
+    background: #f9f9f9;
+    box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    flex: 1;
+}
+
+.calc-btn {
+    background: var(--white);
+    border: 2px solid var(--black);
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--black);
+    transition: all 0.1s;
+    font-family: 'Architects Daughter', cursive;
+    font-weight: bold;
+}
+
+.calc-btn:nth-child(even) {
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+.calc-btn:nth-child(odd) {
+    border-radius: 15px 255px 10px 225px / 225px 10px 255px 15px;
+}
+
+.calc-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px var(--black);
+}
+
+.games-folder-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+}
+
+.games-folder-item .icon-box {
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    box-shadow: 2px 2px 0px var(--black);
+    transition: transform 0.2s;
+}
+
+.games-folder-item:nth-child(1) .icon-box {
+    border-radius: 200px 20px 200px 15px / 15px 200px 20px 200px;
+    transform: skewY(1deg) skewX(-1deg);
+}
+
+.games-folder-item:nth-child(2) .icon-box {
+    border-radius: 15px 225px 20px 255px / 255px 15px 225px 20px;
+    transform: skewY(-1deg) skewX(2deg);
+}
+
+.games-folder-item:hover .icon-box {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.games-folder-item .icon-box svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--black);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+.games-folder-item span {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--black);
+}
+
+.files-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+    border-bottom: 2px solid var(--black);
+    background: var(--white);
+}
+
+.files-path {
+    flex: 1;
+    font-weight: bold;
+    color: var(--black);
+    font-size: 0.85rem;
+}
+
+.files-grid {
     padding: 15px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 15px;
+    overflow-y: auto;
+    flex: 1;
+    align-content: start;
+    transition: background 0.2s;
+}
+
+.empty-folder {
+    padding: 20px;
+    text-align: center;
+    color: var(--black);
+    font-size: 1.1rem;
+    grid-column: 1 / -1;
+}
+
+.new-folder-btn .icon {
+    border-style: dashed !important;
+}
+
+.new-folder-input {
+    width: 100%;
+    max-width: 80px;
+    padding: 2px 5px;
+    text-align: center;
+    font-family: inherit;
+    font-size: 0.9rem;
+    border: 2px solid var(--black);
+    border-radius: var(--radius-sm);
+    margin-top: 5px;
+    outline: none;
+    background: var(--white);
+    color: var(--black);
 }
 
 .folder {
@@ -617,6 +1009,14 @@ body {
     background-color: var(--white);
     transition: transform 0.2s;
     box-shadow: 2px 2px 0px var(--black);
+    overflow: hidden;
+}
+
+.folder .icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(120%);
 }
 
 .folder:nth-child(odd) .icon {
@@ -719,37 +1119,86 @@ body {
 }
 
 .app-settings {
-    padding: 20px;
+    padding: 0;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: row;
+    height: 100%;
 }
 
-.setting-group h3 {
-    margin-bottom: 10px;
-    border-bottom: 2px solid var(--black);
-    padding-bottom: 5px;
-}
-
-.color-swatches {
-    display: flex;
-    gap: 10px;
-}
-
-.swatch {
-    width: 40px;
-    height: 40px;
-    border-radius: 0;
-    border: 2px solid var(--black);
+.settings-nav-item {
+    padding: 8px 12px;
+    font-weight: bold;
     cursor: pointer;
-    box-shadow: 2px 2px 0px var(--black);
-    transition: transform 0.1s;
-    background-color: var(--white) !important;
-    background-image: repeating-linear-gradient(45deg, var(--black), var(--black) 1px, transparent 1px, transparent 5px);
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    margin-bottom: 5px;
+    color: var(--black);
 }
 
-.swatch:hover {
-    transform: scale(1.1);
+.settings-nav-item:hover {
+    border-color: var(--black);
+}
+
+.sketchy-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+    height: 30px;
+}
+
+.sketchy-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 12px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M 0,10 C 60,15 120,15 180,13 C 240,11 270,12 300,11 L 300,16 C 270,17 240,16 180,16 C 120,17 60,16.5 0,10.5 Z" fill="black"/></svg>') no-repeat center;
+    background-size: 100% 100%;
+    border: none;
+    box-shadow: none;
+}
+
+.sketchy-slider::-moz-range-track {
+    width: 100%;
+    height: 12px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M 0,10 C 60,15 120,15 180,13 C 240,11 270,12 300,11 L 300,16 C 270,17 240,16 180,16 C 120,17 60,16.5 0,10.5 Z" fill="black"/></svg>') no-repeat center;
+    background-size: 100% 100%;
+    border: none;
+    box-shadow: none;
+}
+
+.m-timeline::-webkit-slider-runnable-track {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 10" preserveAspectRatio="none"><path d="M 0,5 Q 50,3 100,5 T 200,4 T 300,5" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>') no-repeat center;
+    background-size: 100% 100%;
+}
+
+.m-timeline::-moz-range-track {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 10" preserveAspectRatio="none"><path d="M 0,5 Q 50,3 100,5 T 200,4 T 300,5" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>') no-repeat center;
+    background-size: 100% 100%;
+}
+
+.sketchy-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='35' fill='none' stroke='black' stroke-width='12'/></svg>") no-repeat center;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    margin-top: -6px;
+    box-shadow: none;
+}
+
+.sketchy-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='35' fill='none' stroke='black' stroke-width='12'/></svg>") no-repeat center;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    box-shadow: none;
 }
 
 .drop-zone {
@@ -803,17 +1252,40 @@ body {
     justify-content: center;
     margin-bottom: 20px;
     position: relative;
+}
+
+.record-player.empty-state {
     background-image:
         linear-gradient(to bottom right, transparent calc(50% - 1px), var(--black) calc(50% - 1px), var(--black) calc(50% + 1px), transparent calc(50% + 1px)),
         linear-gradient(to top right, transparent calc(50% - 1px), var(--black) calc(50% - 1px), var(--black) calc(50% + 1px), transparent calc(50% + 1px));
 }
 
-.record-label {
-    display: none;
+.record-player.playing-mode {
+    background-image:
+        radial-gradient(circle at center, transparent 55px, var(--black) 55px, var(--black) 57px, transparent 57px),
+        radial-gradient(circle at center, transparent 42px, var(--black) 42px, var(--black) 44px, transparent 44px);
 }
 
-.record-hole {
-    display: none;
+.record-player.playing-mode::before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--black);
+    border-radius: 50%;
+    background-color: var(--white);
+    z-index: 2;
+}
+
+.record-player.playing-mode::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--black);
+    border-radius: 50%;
+    background-color: var(--white);
+    z-index: 3;
 }
 
 .spin {
@@ -882,10 +1354,10 @@ body {
 }
 
 #indicator-max {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    height: calc(100vh - 80px);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     transform: scale(0.98);
     background: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(0, 0, 0, 0.03) 15px, rgba(0, 0, 0, 0.03) 18px);
 }
@@ -919,7 +1391,7 @@ body {
     width: 100vw;
     height: 100vh;
     background: rgba(255, 255, 255, 0.9);
-    z-index: 999999;
+    z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;
