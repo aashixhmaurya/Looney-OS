@@ -33,25 +33,37 @@ const state = {
     appHistory: [],
     bootTime: Date.now(),
     terminalHistory: [],
-    currentTrack: null
+    currentTrack: null,
+    currentBlobUrl: null
 };
+
+let saveTimeout;
+
+function saveSystem() {
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+        localStorage.setItem("looney_state", JSON.stringify({
+            openApps: Object.keys(state.openWindows)
+        }));
+    }, 500);
+}
 
 let windowSizes = {};
 try {
     const savedSizes = localStorage.getItem('looney_window_sizes');
     if (savedSizes && savedSizes !== "undefined") windowSizes = JSON.parse(savedSizes) || {};
-} catch (e) { }
+} catch (e) {}
 
 let savedIconPositions = {};
 try {
     const savedIcons = localStorage.getItem('looney_icon_positions');
     if (savedIcons && savedIcons !== "undefined") savedIconPositions = JSON.parse(savedIcons) || {};
-} catch (e) { }
+} catch (e) {}
 
 try {
     const savedWP = localStorage.getItem('looney_wallpaper');
     if (savedWP) document.documentElement.style.setProperty('--wallpaper', `url(${savedWP})`);
-} catch (e) { }
+} catch (e) {}
 
 let iconOrder = [];
 try {
@@ -66,7 +78,7 @@ try {
         }
         if (modified) localStorage.setItem('looney_icon_order', JSON.stringify(iconOrder));
     }
-} catch (e) { }
+} catch (e) {}
 
 let orderChanged = false;
 Object.keys(state.apps).forEach(appId => {
@@ -77,7 +89,7 @@ Object.keys(state.apps).forEach(appId => {
 });
 
 if (orderChanged) {
-    try { localStorage.setItem('looney_icon_order', JSON.stringify(iconOrder)); } catch (e) { }
+    try { localStorage.setItem('looney_icon_order', JSON.stringify(iconOrder)); } catch (e) {}
 }
 
 const elements = {
@@ -91,31 +103,41 @@ const elements = {
 
 async function runBoot() {
     await sleep(2000);
-    document.getElementById('boot-screen').style.opacity = "0";
-
-    setTimeout(() => {
-        document.getElementById('boot-screen').style.display = 'none';
+    if (document.getElementById('boot-screen')) {
+        document.getElementById('boot-screen').style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById('boot-screen').style.display = 'none';
+            elements.desktop.style.display = 'block';
+            elements.taskbar.style.display = 'flex';
+            initOS();
+        }, 800);
+    } else {
         elements.desktop.style.display = 'block';
         elements.taskbar.style.display = 'flex';
         initOS();
-    }, 800);
+    }
 }
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 function initOS() {
+    if (window.__osStarted) return;
+    window.__osStarted = true;
+
     renderDesktopIcons();
     startClock();
 
     const ctxMenu = document.getElementById('context-menu');
 
-    document.addEventListener('click', () => {
-        ctxMenu.style.display = 'none';
+    document.addEventListener('click', (e) => {
+        if (ctxMenu && !e.target.closest('#context-menu')) {
+            ctxMenu.style.display = 'none';
+        }
     });
 
     elements.desktop.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        if (e.target === elements.desktop || e.target === elements.desktopIcons) {
+        if (ctxMenu && (e.target === elements.desktop || e.target === elements.desktopIcons)) {
             ctxMenu.style.display = 'flex';
             let x = e.clientX;
             let y = e.clientY;
@@ -126,40 +148,65 @@ function initOS() {
         }
     });
 
-    document.getElementById('ctx-refresh').addEventListener('click', () => {
-        elements.desktop.style.opacity = '0';
-        setTimeout(() => elements.desktop.style.opacity = '1', 200);
-    });
-
-    document.getElementById('ctx-note').addEventListener('click', () => {
-        openApp('notepad');
-    });
-
-    document.getElementById('ctx-settings').addEventListener('click', () => {
-        openApp('settings');
-    });
-
-    document.getElementById('start-btn').addEventListener('click', () => {
-        let anyOpen = false;
-        Object.values(state.openWindows).forEach(winData => {
-            if (!winData.minimized) anyOpen = true;
+    const ctxRefresh = document.getElementById('ctx-refresh');
+    if (ctxRefresh) {
+        ctxRefresh.addEventListener('click', () => {
+            elements.desktop.style.opacity = '0';
+            setTimeout(() => elements.desktop.style.opacity = '1', 200);
         });
+    }
 
-        Object.keys(state.openWindows).forEach(appId => {
-            if (anyOpen) {
-                minimizeApp(appId);
-            } else {
-                const winData = state.openWindows[appId];
-                if (winData.lastTop) {
-                    winData.element.style.top = winData.lastTop;
-                    winData.element.style.left = winData.lastLeft;
+    const ctxNote = document.getElementById('ctx-note');
+    if (ctxNote) {
+        ctxNote.addEventListener('click', () => {
+            openApp('notepad');
+        });
+    }
+
+    const ctxSettings = document.getElementById('ctx-settings');
+    if (ctxSettings) {
+        ctxSettings.addEventListener('click', () => {
+            openApp('settings');
+        });
+    }
+
+    const startBtn = document.getElementById('start-btn');
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            let anyOpen = false;
+            Object.values(state.openWindows).forEach(winData => {
+                if (!winData.minimized) anyOpen = true;
+            });
+
+            Object.keys(state.openWindows).forEach(appId => {
+                if (anyOpen) {
+                    minimizeApp(appId);
+                } else {
+                    const winData = state.openWindows[appId];
+                    if (winData.lastTop) {
+                        winData.element.style.top = winData.lastTop;
+                        winData.element.style.left = winData.lastLeft;
+                    }
+                    winData.element.classList.remove('minimized');
+                    winData.minimized = false;
+                    focusWindow(appId);
                 }
-                winData.element.classList.remove('minimized');
-                winData.minimized = false;
-                focusWindow(appId);
-            }
+            });
         });
-    });
+    }
+
+    let data;
+    try {
+        data = JSON.parse(localStorage.getItem("looney_state")) || {};
+    } catch (e) {
+        data = {};
+    }
+
+    if (data && data.openApps) {
+        data.openApps.forEach(appId => {
+            setTimeout(() => openApp(appId), 200);
+        });
+    }
 }
 
 function renderDesktopIcons() {
@@ -189,37 +236,31 @@ function renderDesktopIcons() {
 }
 
 function saveIconOrder() {
-    const currentIcons = Array.from(elements.desktopIcons.querySelectorAll('.desktop-icon:not(.placeholder)'));
-    iconOrder = currentIcons.map(icon => icon.getAttribute('data-appid'));
+    const icons = document.querySelectorAll('.desktop-icon:not(.placeholder)');
+    const order = Array.from(icons).map(i => i.dataset.appid || i.getAttribute('data-appid'));
+    iconOrder = order;
     try {
-        localStorage.setItem('looney_icon_order', JSON.stringify(iconOrder));
-    } catch (e) { }
+        localStorage.setItem('looney_icon_order', JSON.stringify(order));
+    } catch (e) {}
 }
 
-function startClock() {
-    let activeTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    fetch('https://ipapi.co/json/')
-        .then(response => response.json())
-        .then(data => {
-            if (data.timezone) {
-                activeTimeZone = data.timezone;
-            }
-        })
-        .catch(err => console.log("VPN time detect nahi hua."));
+let clockInterval;
 
-    setInterval(() => {
+function startClock() {
+    if (clockInterval) clearInterval(clockInterval);
+
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    clockInterval = setInterval(() => {
         const now = new Date();
         try {
             elements.clock.textContent = new Intl.DateTimeFormat('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
-                timeZone: activeTimeZone
+                timeZone: tz
             }).format(now);
         } catch (e) {
-            elements.clock.textContent = new Intl.DateTimeFormat('en-US', {
-                hour: '2-digit',
-                minute: '2-digit'
-            }).format(now);
+            elements.clock.textContent = now.toLocaleTimeString();
         }
     }, 1000);
 }
@@ -292,14 +333,13 @@ function makeIconDraggable(iconElement, appId) {
 
             let newLeft = currentX - startX;
             let newTop = currentY - startY;
-
             iconElement.style.left = newLeft + 'px';
             iconElement.style.top = newTop + 'px';
 
-            let elementBelow = document.elementFromPoint(currentX, currentY);
-            if (elementBelow) {
-                let targetIcon = elementBelow.closest('.desktop-icon:not(.placeholder)');
-                if (targetIcon && targetIcon !== iconElement) {
+            let el = document.elementFromPoint(currentX, currentY);
+            if (el) {
+                let target = el.closest('.desktop-icon:not(.placeholder)');
+                if (target && target !== iconElement) {
                     droppedOnGrid = true;
                     if (!placeholder) {
                         placeholder = document.createElement('div');
@@ -308,14 +348,14 @@ function makeIconDraggable(iconElement, appId) {
                         placeholder.style.height = '120px';
                         placeholder.style.opacity = '0';
                     }
-                    const targetRect = targetIcon.getBoundingClientRect();
+                    const targetRect = target.getBoundingClientRect();
                     const targetCenter = targetRect.left + targetRect.width / 2;
                     if (currentX < targetCenter) {
-                        targetIcon.parentNode.insertBefore(placeholder, targetIcon);
+                        target.parentNode.insertBefore(placeholder, target);
                     } else {
-                        targetIcon.parentNode.insertBefore(placeholder, targetIcon.nextSibling);
+                        target.parentNode.insertBefore(placeholder, target.nextSibling);
                     }
-                } else if (elementBelow.id === 'desktop' || elementBelow.id === 'desktop-icons') {
+                } else if (el.id === 'desktop' || el.id === 'desktop-icons') {
                     droppedOnGrid = false;
                     if (placeholder && placeholder.parentNode) {
                         placeholder.remove();
@@ -332,17 +372,24 @@ function makeIconDraggable(iconElement, appId) {
         document.removeEventListener('touchend', handleUp);
 
         if (isDragging) {
+            iconElement.style.zIndex = '1';
+            iconElement.style.pointerEvents = '';
+            iconElement.style.transition = 'transform 0.2s, box-shadow 0.2s';
+            iconElement.style.transform = '';
+
             if (droppedOnGrid && placeholder && placeholder.parentNode) {
                 iconElement.style.position = '';
                 iconElement.style.width = '';
                 iconElement.style.height = '';
                 iconElement.style.left = '';
                 iconElement.style.top = '';
+
                 placeholder.parentNode.insertBefore(iconElement, placeholder);
                 placeholder.remove();
                 delete savedIconPositions[appId];
             } else {
                 if (placeholder) placeholder.remove();
+
                 iconElement.style.position = 'absolute';
                 iconElement.style.width = '100px';
 
@@ -359,18 +406,38 @@ function makeIconDraggable(iconElement, appId) {
                 iconElement.style.left = newL + 'px';
                 iconElement.style.top = newT + 'px';
 
-                savedIconPositions[appId] = { left: newL + 'px', top: newT + 'px' };
-            }
+                // ANTI-OVERLAP SHIELD (Collision Detection)
+                let isOverlapping = false;
+                const myRect = iconElement.getBoundingClientRect();
+                document.querySelectorAll('.desktop-icon').forEach(otherIcon => {
+                    if (otherIcon !== iconElement && !otherIcon.classList.contains('placeholder')) {
+                        const otherRect = otherIcon.getBoundingClientRect();
+                        if (myRect.left < otherRect.right - 20 &&
+                            myRect.right > otherRect.left + 20 &&
+                            myRect.top < otherRect.bottom - 20 &&
+                            myRect.bottom > otherRect.top + 20) {
+                            isOverlapping = true;
+                        }
+                    }
+                });
 
-            iconElement.style.zIndex = '1';
-            iconElement.style.pointerEvents = '';
-            iconElement.style.transition = 'transform 0.2s, box-shadow 0.2s';
-            iconElement.style.transform = '';
+                if (isOverlapping) {
+                    iconElement.style.position = '';
+                    iconElement.style.width = '';
+                    iconElement.style.height = '';
+                    iconElement.style.left = '';
+                    iconElement.style.top = '';
+                    delete savedIconPositions[appId];
+                    document.getElementById('desktop-icons').appendChild(iconElement);
+                } else {
+                    savedIconPositions[appId] = { left: newL + 'px', top: newT + 'px' };
+                }
+            }
 
             saveIconOrder();
             try {
                 localStorage.setItem('looney_icon_positions', JSON.stringify(savedIconPositions));
-            } catch (err) { }
+            } catch (err) {}
         } else {
             iconElement.style.transition = 'transform 0.2s, box-shadow 0.2s';
             openApp(appId);
@@ -437,6 +504,8 @@ function openApp(appId) {
         return;
     }
 
+    if (!state.apps[appId]) return;
+
     const app = state.apps[appId];
 
     if (state.openWindows[appId]) {
@@ -450,6 +519,7 @@ function openApp(appId) {
         winData.minimized = false;
         focusWindow(appId);
         updateTaskbar();
+        saveSystem();
         return;
     }
 
@@ -507,14 +577,12 @@ function openApp(appId) {
 
     focusWindow(appId);
     updateTaskbar();
+    saveSystem();
 }
 
 function closeApp(appId) {
     const winData = state.openWindows[appId];
     if (!winData) return;
-
-    const win = winData.element;
-    win.classList.add('closing');
 
     if (appId === 'music') stopMusic();
 
@@ -523,13 +591,13 @@ function closeApp(appId) {
         state.appHistory.push(`[${timeStr}] Closed: ${state.apps[appId].title}`);
     }
 
+    winData.element.remove();
     delete state.openWindows[appId];
+
+    saveSystem();
+
     if (state.activeAppId === appId) state.activeAppId = null;
     updateTaskbar();
-
-    setTimeout(() => {
-        win.remove();
-    }, 300);
 }
 
 function maximizeApp(appId) {
@@ -552,6 +620,7 @@ function minimizeApp(appId) {
     winData.element.classList.add('minimized');
     winData.minimized = true;
     updateTaskbar();
+    saveSystem();
 }
 
 function focusWindow(appId) {
@@ -659,6 +728,7 @@ function updateTaskbar() {
                     clone.remove();
                     clone = null;
                 }
+                isDragging = false;
             } else {
                 if (state.activeAppId === appId && !winData.minimized) {
                     minimizeApp(appId);
@@ -681,7 +751,10 @@ function updateTaskbar() {
 }
 
 function makeDraggable(element, handle, appId) {
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    let pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0;
     let dragAction = null;
 
     handle.onmousedown = dragStart;
@@ -720,8 +793,8 @@ function makeDraggable(element, handle, appId) {
             pos4 = e.clientY;
         }
 
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
+        document.addEventListener('mousemove', elementDrag);
+        document.addEventListener('mouseup', closeDragElement);
         document.ontouchend = closeDragElement;
         document.ontouchmove = elementDrag;
         window.addEventListener('blur', closeDragElement);
@@ -768,8 +841,8 @@ function makeDraggable(element, handle, appId) {
     }
 
     function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
+        document.removeEventListener('mousemove', elementDrag);
+        document.removeEventListener('mouseup', closeDragElement);
         document.ontouchend = null;
         document.ontouchmove = null;
         window.removeEventListener('blur', closeDragElement);
@@ -868,7 +941,7 @@ function makeResizable(element, handle, appId) {
 
         try {
             localStorage.setItem('looney_window_sizes', JSON.stringify(windowSizes));
-        } catch (e) { }
+        } catch (e) {}
     }
 
     handle.addEventListener('mousedown', initResize);
@@ -876,43 +949,72 @@ function makeResizable(element, handle, appId) {
 }
 
 function populateAppContent(appId, container) {
-    switch (appId) {
-        case 'notepad': renderNotepad(container); break;
-        case 'terminal': renderTerminal(container); break;
-        case 'files': renderFiles(container); break;
-        case 'calendar': renderCalendar(container); break;
-        case 'settings': renderSettings(container); break;
-        case 'music': renderMusic(container); break;
-        case 'calc': renderCalc(container); break;
-        case 'doodle': renderDoodle(container); break;
-        case 'game': renderGame(container); break;
-        case 'snake': renderSnake(container); break;
+    try {
+        switch (appId) {
+            case 'notepad':
+                renderNotepad(container);
+                break;
+            case 'terminal':
+                renderTerminal(container);
+                break;
+            case 'files':
+                renderFiles(container);
+                break;
+            case 'calendar':
+                renderCalendar(container);
+                break;
+            case 'settings':
+                renderSettings(container);
+                break;
+            case 'music':
+                renderMusic(container);
+                break;
+            case 'calc':
+                renderCalc(container);
+                break;
+            case 'doodle':
+                renderDoodle(container);
+                break;
+            case 'game':
+                renderGame(container);
+                break;
+            case 'snake':
+                renderSnake(container);
+                break;
+        }
+    } catch (e) {
+        container.innerHTML = "<div style='padding:20px;font-weight:bold;'>App crashed 😵</div>";
+        console.error(e);
     }
 }
 
 function renderNotepad(container) {
     container.className = 'window-content app-notepad';
-    let savedText = 'Start typing your cartoon script here...';
-    try {
-        savedText = localStorage.getItem('looney_notes') || savedText;
-    } catch (e) { }
+    container.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100%; font-weight:bold; font-size:1.2rem;">Loading...</div>`;
 
-    container.innerHTML = `
-        <textarea class="np-textarea">${savedText}</textarea>
-        <div class="toolbar">
-            <button class="looney-btn np-save">💾 Save Notes</button>
-        </div>
-    `;
+    setTimeout(() => {
+        let savedText = 'Start typing your cartoon script here...';
+        try {
+            savedText = localStorage.getItem('looney_notes') || savedText;
+        } catch (e) {}
 
-    container.querySelector('.np-save').addEventListener('click', () => {
-        const text = container.querySelector('.np-textarea').value;
-        try { localStorage.setItem('looney_notes', text); } catch (e) { }
+        container.innerHTML = `
+            <textarea class="np-textarea">${savedText}</textarea>
+            <div class="toolbar">
+                <button class="looney-btn np-save">💾 Save Notes</button>
+            </div>
+        `;
 
-        const btn = container.querySelector('.np-save');
-        const origText = btn.innerHTML;
-        btn.innerHTML = "✅ Saved!";
-        setTimeout(() => btn.innerHTML = origText, 2000);
-    });
+        container.querySelector('.np-save').addEventListener('click', () => {
+            const text = container.querySelector('.np-textarea').value;
+            try { localStorage.setItem('looney_notes', text); } catch (e) {}
+
+            const btn = container.querySelector('.np-save');
+            const origText = btn.innerHTML;
+            btn.innerHTML = "✅ Saved!";
+            setTimeout(() => btn.innerHTML = origText, 2000);
+        });
+    }, 300);
 }
 
 function renderFiles(container) {
@@ -950,7 +1052,7 @@ function renderFiles(container) {
         if (saved) {
             customItems = JSON.parse(saved);
         }
-    } catch (e) { }
+    } catch (e) {}
 
     function getItemsForPath(path) {
         if (path === '/Uploads') {
@@ -1012,6 +1114,11 @@ function renderFiles(container) {
                     return;
                 }
 
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("File too large 🚫");
+                    return;
+                }
+
                 const isImg = file.type.startsWith('image/');
                 const isAudio = file.type.startsWith('audio/');
                 const isVideo = file.type.startsWith('video/');
@@ -1022,7 +1129,12 @@ function renderFiles(container) {
                 else if (isVideo) fileIcon = fileIcons.video;
 
                 if (isVideo || isAudio || file.size > 2 * 1024 * 1024) {
+                    if (state.currentBlobUrl) {
+                        URL.revokeObjectURL(state.currentBlobUrl);
+                        state.currentBlobUrl = null;
+                    }
                     const blobUrl = URL.createObjectURL(file);
+                    state.currentBlobUrl = blobUrl;
                     const newItem = {
                         id: 'f_' + Date.now() + Math.floor(Math.random() * 1000),
                         name: file.name,
@@ -1056,6 +1168,10 @@ function renderFiles(container) {
     });
 
     function openItem(item) {
+        if (state.currentBlobUrl) {
+            URL.revokeObjectURL(state.currentBlobUrl);
+            state.currentBlobUrl = null;
+        }
         if (item.type === 'folder') {
             currentPath = currentPath === '/' ? '/' + item.name : currentPath + '/' + item.name;
             selectedItems.clear();
@@ -1549,19 +1665,15 @@ function renderTerminal(container) {
                 output.innerHTML += `<div>Available commands:</div>
                                      <div>- help: Show this message</div>
                                      <div>- clear: Clear terminal output</div>
-                                     <div>- open [app]: Open an app (e.g., 'open calculator')</div>
-                                     <div>- close [app]: Close an app (e.g., 'close notes')</div>
-                                     <div>- delete [app]: Remove app from OS</div>
-                                     <div>- restore [app]: Restore a deleted app (e.g., 'restore calc')</div>
-                                     <div>- history: Show app opening/closing logs</div>
-                                     <div>- status / running: List currently running apps</div>
-                                     <div>- uptime: Show system uptime</div>
-                                     <div>- date: Show current date/time</div>
-                                     <div>- bounce: Try it!</div>`;
+                                     <div>- open [app]: Open an app</div>
+                                     <div>- close [app]: Close an app</div>
+                                     <div>- delete [app]: Remove app</div>
+                                     <div>- restore [app]: Bring back app</div>
+                                     <div>- history: Show OS logs</div>
+                                     <div>- status: List running apps</div>
+                                     <div>- uptime: System uptime</div>`;
             } else if (cmd === 'clear') {
                 output.innerHTML = '';
-            } else if (cmd === 'date' || cmd === 'time') {
-                output.innerHTML += `<div>${new Date().toString()}</div>`;
             } else if (cmd.startsWith('open ')) {
                 const appName = cmd.replace(/^open\s+/, '');
                 const appId = getAppIdFromAlias(appName);
@@ -1569,7 +1681,7 @@ function renderTerminal(container) {
                     output.innerHTML += `<div>Opening ${state.apps[appId].title}...</div>`;
                     openApp(appId);
                 } else {
-                    output.innerHTML += `<div>App '${appName}' not found in the system.</div>`;
+                    output.innerHTML += `<div>App '${appName}' not found.</div>`;
                 }
             } else if (cmd.startsWith('close ')) {
                 const appName = cmd.replace(/^close\s+/, '');
@@ -1578,83 +1690,10 @@ function renderTerminal(container) {
                     output.innerHTML += `<div>Closing ${state.apps[appId].title}...</div>`;
                     closeApp(appId);
                 } else {
-                    output.innerHTML += `<div>App '${appName}' is not currently running.</div>`;
+                    output.innerHTML += `<div>App '${appName}' is not running.</div>`;
                 }
-            } else if (cmd.startsWith('delete ') || cmd.startsWith('remove ')) {
-                const appName = cmd.replace(/^(delete|remove)\s+/, '');
-                const appId = getAppIdFromAlias(appName);
-                if (appId && state.apps[appId]) {
-                    if (appId === 'terminal') {
-                        output.innerHTML += `<div><span style="color:var(--red)">[ERROR] You cannot delete the Terminal while using it!</span></div>`;
-                    } else {
-                        if (state.openWindows[appId]) closeApp(appId);
-                        const appTitle = state.apps[appId].title;
-
-                        state.deletedApps[appId] = state.apps[appId];
-                        delete state.apps[appId];
-                        renderDesktopIcons();
-
-                        const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
-                        state.appHistory.push(`[${timeStr}] Deleted: ${appTitle}`);
-                        output.innerHTML += `<div>🗑️ ${appTitle} removed. Type 'restore ${appId}' to bring it back.</div>`;
-                    }
-                } else {
-                    output.innerHTML += `<div>App '${appName}' not found or already deleted.</div>`;
-                }
-            } else if (cmd.startsWith('restore ') || cmd.startsWith('install ')) {
-                const appName = cmd.replace(/^(restore|install)\s+/, '');
-                const appId = getAppIdFromAlias(appName);
-                if (appId && state.deletedApps[appId]) {
-                    state.apps[appId] = state.deletedApps[appId];
-                    delete state.deletedApps[appId];
-                    renderDesktopIcons();
-
-                    const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
-                    state.appHistory.push(`[${timeStr}] Restored: ${state.apps[appId].title}`);
-                    output.innerHTML += `<div>✨ ${state.apps[appId].title} has been successfully restored!</div>`;
-                } else if (appId && state.apps[appId]) {
-                    output.innerHTML += `<div>App '${appName}' is already installed on your system.</div>`;
-                } else {
-                    output.innerHTML += `<div>App '${appName}' not found in the trash.</div>`;
-                }
-            } else if (cmd.includes('history')) {
-                if (state.appHistory.length === 0) {
-                    output.innerHTML += `<div>No system history recorded yet.</div>`;
-                } else {
-                    output.innerHTML += `<div>--- System Activity Logs ---</div>`;
-                    state.appHistory.forEach(log => {
-                        output.innerHTML += `<div>${log}</div>`;
-                    });
-                }
-            } else if (cmd === 'status' || cmd === 'running') {
-                const openApps = Object.keys(state.openWindows);
-                if (openApps.length === 0) {
-                    output.innerHTML += `<div>No apps are currently running.</div>`;
-                } else {
-                    output.innerHTML += `<div>--- Running Apps ---</div>`;
-                    openApps.forEach(id => {
-                        const status = state.openWindows[id].minimized ? '(Minimized)' : '(Active)';
-                        output.innerHTML += `<div>🟢 ${state.apps[id].title} ${status}</div>`;
-                    });
-                }
-            } else if (cmd === 'uptime') {
-                const diff = Math.floor((Date.now() - state.bootTime) / 1000);
-                const m = Math.floor(diff / 60);
-                const s = diff % 60;
-                output.innerHTML += `<div>System uptime: ${m} minutes, ${s} seconds.</div>`;
-            } else if (cmd === 'bounce') {
-                const winData = state.openWindows['terminal'];
-                if (winData) {
-                    const win = winData.element;
-                    win.style.animation = 'none';
-                    void win.offsetWidth;
-                    win.style.animation = 'windowPop 0.5s infinite alternate cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-                    setTimeout(() => win.style.animation = 'none', 3000);
-                }
-                output.innerHTML += `<div>Bouncing! Boing!</div>`;
-            }
-            else if (cmd !== '') {
-                output.innerHTML += `<div>Command not found: ${cmd}. Type 'help' for available commands.</div>`;
+            } else if (cmd !== '') {
+                output.innerHTML += `<div>Command not found: ${cmd}. Type 'help'</div>`;
             }
 
             input.value = '';
@@ -1745,9 +1784,10 @@ function renderSettings(container) {
 
         } else if (tabName === 'audio') {
             let currentVol = 100;
+            let data;
             try {
-                const savedVol = localStorage.getItem('looney_volume');
-                if (savedVol !== null) currentVol = parseInt(savedVol);
+                data = localStorage.getItem('looney_volume');
+                if (data !== null) currentVol = parseInt(data);
             } catch (e) { }
 
             mainContent.innerHTML = `
@@ -1816,8 +1856,8 @@ function renderMusic(container) {
 
     let fsItems = [];
     try {
-        const saved = localStorage.getItem('looney_fs_items');
-        if (saved) fsItems = JSON.parse(saved);
+        let data = JSON.parse(localStorage.getItem('looney_fs_items'));
+        if (data) fsItems = data;
     } catch (e) { }
 
     const rootTracks = fsItems.filter(i => i.type === 'file' && i.path === '/Music' && !i.deleted && (i.mimeType?.startsWith('audio/') || i.data?.startsWith('data:audio')));
@@ -1889,9 +1929,9 @@ function renderMusic(container) {
     let isLocalPlaying = autoPlay;
 
     try {
-        const savedVol = localStorage.getItem('looney_volume');
-        if (savedVol !== null) {
-            audioEl.volume = parseInt(savedVol) / 100;
+        let data = localStorage.getItem('looney_volume');
+        if (data !== null) {
+            audioEl.volume = parseInt(data) / 100;
         }
     } catch (e) { }
 
@@ -2314,7 +2354,10 @@ function renderGame(container) {
     let isPlaying = false;
     let score = 0;
     let hiScore = 0;
-    try { hiScore = localStorage.getItem('looney_game_hi') || 0; } catch (e) { }
+    try {
+        let data = localStorage.getItem('looney_game_hi');
+        if (data !== null) hiScore = parseInt(data) || 0;
+    } catch (e) { }
     hiScoreEl.textContent = hiScore;
 
     let player = { x: 0, y: 0, w: 30, h: 30, speed: 6, dx: 0 };
@@ -2538,7 +2581,10 @@ function renderSnake(container) {
     let isPlaying = false;
     let score = 0;
     let hiScore = 0;
-    try { hiScore = localStorage.getItem('looney_snake_hi') || 0; } catch (e) { }
+    try {
+        let data = localStorage.getItem('looney_snake_hi');
+        if (data !== null) hiScore = parseInt(data) || 0;
+    } catch (e) { }
     hiScoreEl.textContent = hiScore;
 
     const gridSize = 20;
@@ -2794,11 +2840,19 @@ function renderSnake(container) {
         if (Math.abs(deltaX) < 30 && Math.abs(deltaY) < 30) return;
 
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            if (deltaX > 0 && dx !== -1) { nextDx = 1; nextDy = 0; }
-            else if (deltaX < 0 && dx !== 1) { nextDx = -1; nextDy = 0; }
+            if (deltaX > 0 && dx !== -1) { 
+                nextDx = 1; nextDy = 0; 
+            }
+            else if (deltaX < 0 && dx !== 1) { 
+                nextDx = -1; nextDy = 0; 
+            }
         } else {
-            if (deltaY > 0 && dy !== -1) { nextDx = 0; nextDy = 1; }
-            else if (deltaY < 0 && dy !== 1) { nextDx = 0; nextDy = -1; }
+            if (deltaY > 0 && dy !== -1) { 
+                nextDx = 0; nextDy = 1; 
+            }
+            else if (deltaY < 0 && dy !== 1) { 
+                nextDx = 0; nextDy = -1; 
+            }
         }
     };
 
@@ -2812,75 +2866,8 @@ function renderSnake(container) {
     canvas.addEventListener('mouseleave', () => isSwiping = false);
 }
 
-function setWallpaperFromFile(file) {
-    if (!file.type.startsWith('image/')) {
-        alert('Only image files are allowed!');
-        return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
-            let w = img.width;
-            let h = img.height;
-            const MAX_SIZE = 1600;
-            if (w > MAX_SIZE || h > MAX_SIZE) {
-                const ratio = Math.min(MAX_SIZE / w, MAX_SIZE / h);
-                w = Math.floor(w * ratio);
-                h = Math.floor(h * ratio);
-            }
-
-            canvas.width = w;
-            canvas.height = h;
-
-            ctx.filter = 'grayscale(100%) contrast(120%)';
-            ctx.drawImage(img, 0, 0, w, h);
-
-            const finalImgUrl = canvas.toDataURL('image/jpeg', 0.9);
-            document.documentElement.style.setProperty('--wallpaper', `url(${finalImgUrl})`);
-        };
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-}
-
-const globalOverlay = document.getElementById('global-drop-overlay');
-
-window.addEventListener('dragenter', (e) => {
-    if (e.dataTransfer.types && e.dataTransfer.types.includes('Files')) {
-        e.preventDefault();
-        globalOverlay.classList.add('active');
-    }
+window.addEventListener('error', (e) => {
+    console.error("Global Error:", e.message);
 });
 
-globalOverlay.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-});
-
-globalOverlay.addEventListener('dragleave', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    globalOverlay.classList.remove('active');
-});
-
-globalOverlay.addEventListener('drop', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    globalOverlay.classList.remove('active');
-
-    if (e.target.closest('.files-grid')) {
-        return;
-    }
-
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        setWallpaperFromFile(e.dataTransfer.files[0]);
-    }
-});
-
-window.onload = () => {
-    runBoot();
-};
+window.addEventListener('load', runBoot);

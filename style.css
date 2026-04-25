@@ -283,7 +283,6 @@ button,
         transform: translateY(20px);
         opacity: 0;
     }
-
     100% {
         transform: translateY(0);
         opacity: 1;
@@ -318,7 +317,6 @@ button,
 #desktop-icons {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(120px, 1fr));
     gap: 1rem;
     padding: 1rem;
     height: 100%;
@@ -483,7 +481,6 @@ button,
         transform: scale(0.8);
         opacity: 0;
     }
-
     100% {
         transform: scale(1);
         opacity: 1;
@@ -495,7 +492,6 @@ button,
         transform: scale(1);
         opacity: 1;
     }
-
     100% {
         transform: scale(0.8);
         opacity: 0;
@@ -1255,15 +1251,11 @@ button,
 }
 
 .record-player.empty-state {
-    background-image:
-        linear-gradient(to bottom right, transparent calc(50% - 1px), var(--black) calc(50% - 1px), var(--black) calc(50% + 1px), transparent calc(50% + 1px)),
-        linear-gradient(to top right, transparent calc(50% - 1px), var(--black) calc(50% - 1px), var(--black) calc(50% + 1px), transparent calc(50% + 1px));
+    background-image: linear-gradient(to bottom right, transparent calc(50% - 1px), var(--black) calc(50% - 1px), var(--black) calc(50% + 1px), transparent calc(50% + 1px)), linear-gradient(to top right, transparent calc(50% - 1px), var(--black) calc(50% - 1px), var(--black) calc(50% + 1px), transparent calc(50% + 1px));
 }
 
 .record-player.playing-mode {
-    background-image:
-        radial-gradient(circle at center, transparent 55px, var(--black) 55px, var(--black) 57px, transparent 57px),
-        radial-gradient(circle at center, transparent 42px, var(--black) 42px, var(--black) 44px, transparent 44px);
+    background-image: radial-gradient(circle at center, transparent 55px, var(--black) 55px, var(--black) 57px, transparent 57px), radial-gradient(circle at center, transparent 42px, var(--black) 42px, var(--black) 44px, transparent 44px);
 }
 
 .record-player.playing-mode::before {
