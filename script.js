@@ -34,7 +34,7 @@ const state = {
     bootTime: Date.now(),
     terminalHistory: [],
     currentTrack: null,
-    currentBlobUrl: null
+    currentBlobUrls: []
 };
 
 let saveTimeout;
@@ -61,9 +61,47 @@ try {
 } catch (e) {}
 
 try {
-    const savedWP = localStorage.getItem('looney_wallpaper');
+    const savedWP = localStorage.getItem('looney_wallpaper') || localStorage.getItem("wallpaper");
     if (savedWP) document.documentElement.style.setProperty('--wallpaper', `url(${savedWP})`);
 } catch (e) {}
+
+function applyWallpaperFromFile(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const dataUrl = event.target.result;
+
+        // 🔥 APPLY WALLPAPER
+        document.documentElement.style.setProperty('--wallpaper', `url(${dataUrl})`);
+
+        // 💾 SAVE
+        localStorage.setItem("looney_wallpaper", dataUrl);
+        localStorage.setItem("wallpaper", dataUrl);
+
+        console.log("Wallpaper Applied ✅");
+    };
+
+    reader.readAsDataURL(file);
+}
+
+document.addEventListener("dragover", (e) => {
+    if (e.dataTransfer && Array.from(e.dataTransfer.types || []).includes("Files")) {
+        e.preventDefault();
+    }
+}, true);
+
+document.addEventListener("drop", (e) => {
+    const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!file) return;
+
+    // ONLY FOR IMAGE
+    if (file.type.startsWith("image/")) {
+        e.preventDefault();
+        applyWallpaperFromFile(file);
+    }
+}, true);
 
 let iconOrder = [];
 try {
@@ -406,7 +444,6 @@ function makeIconDraggable(iconElement, appId) {
                 iconElement.style.left = newL + 'px';
                 iconElement.style.top = newT + 'px';
 
-                // ANTI-OVERLAP SHIELD (Collision Detection)
                 let isOverlapping = false;
                 const myRect = iconElement.getBoundingClientRect();
                 document.querySelectorAll('.desktop-icon').forEach(otherIcon => {
@@ -1114,7 +1151,7 @@ function renderFiles(container) {
                     return;
                 }
 
-                if (file.size > 2 * 1024 * 1024) {
+                if (file.size > 10 * 1024 * 1024) {
                     alert("File too large 🚫");
                     return;
                 }
@@ -1128,13 +1165,13 @@ function renderFiles(container) {
                 else if (isAudio) fileIcon = fileIcons.music;
                 else if (isVideo) fileIcon = fileIcons.video;
 
-                if (isVideo || isAudio || file.size > 2 * 1024 * 1024) {
+                if (isVideo || isAudio || file.size > 5 * 1024 * 1024) {
                     if (state.currentBlobUrl) {
                         URL.revokeObjectURL(state.currentBlobUrl);
                         state.currentBlobUrl = null;
                     }
                     const blobUrl = URL.createObjectURL(file);
-                    state.currentBlobUrl = blobUrl;
+                    state.currentBlobUrls.push(blobUrl);
                     const newItem = {
                         id: 'f_' + Date.now() + Math.floor(Math.random() * 1000),
                         name: file.name,
@@ -1692,8 +1729,81 @@ function renderTerminal(container) {
                 } else {
                     output.innerHTML += `<div>App '${appName}' is not running.</div>`;
                 }
-            } else if (cmd !== '') {
-                output.innerHTML += `<div>Command not found: ${cmd}. Type 'help'</div>`;
+            } else if (cmd.startsWith('delete ') || cmd.startsWith('remove ')) {
+                const appName = cmd.replace(/^(delete|remove)\s+/, '');
+                const appId = getAppIdFromAlias(appName);
+                if (appId && state.apps[appId]) {
+                    if (appId === 'terminal') {
+                        output.innerHTML += `<div><span style="color:var(--red)">[ERROR] You cannot delete the Terminal while using it!</span></div>`;
+                    } else {
+                        if (state.openWindows[appId]) closeApp(appId);
+                        const appTitle = state.apps[appId].title;
+
+                        state.deletedApps[appId] = state.apps[appId];
+                        delete state.apps[appId];
+                        renderDesktopIcons();
+
+                        const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+                        state.appHistory.push(`[${timeStr}] Deleted: ${appTitle}`);
+                        output.innerHTML += `<div>🗑️ ${appTitle} removed. Type 'restore ${appId}' to bring it back.</div>`;
+                    }
+                } else {
+                    output.innerHTML += `<div>App '${appName}' not found or already deleted.</div>`;
+                }
+            } else if (cmd.startsWith('restore ') || cmd.startsWith('install ')) {
+                const appName = cmd.replace(/^(restore|install)\s+/, '');
+                const appId = getAppIdFromAlias(appName);
+                if (appId && state.deletedApps[appId]) {
+                    state.apps[appId] = state.deletedApps[appId];
+                    delete state.deletedApps[appId];
+                    renderDesktopIcons();
+
+                    const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+                    state.appHistory.push(`[${timeStr}] Restored: ${state.apps[appId].title}`);
+                    output.innerHTML += `<div>✨ ${state.apps[appId].title} has been successfully restored!</div>`;
+                } else if (appId && state.apps[appId]) {
+                    output.innerHTML += `<div>App '${appName}' is already installed on your system.</div>`;
+                } else {
+                    output.innerHTML += `<div>App '${appName}' not found in the trash.</div>`;
+                }
+            } else if (cmd.includes('history')) {
+                if (state.appHistory.length === 0) {
+                    output.innerHTML += `<div>No system history recorded yet.</div>`;
+                } else {
+                    output.innerHTML += `<div>--- System Activity Logs ---</div>`;
+                    state.appHistory.forEach(log => {
+                        output.innerHTML += `<div>${log}</div>`;
+                    });
+                }
+            } else if (cmd === 'status' || cmd === 'running') {
+                const openApps = Object.keys(state.openWindows);
+                if (openApps.length === 0) {
+                    output.innerHTML += `<div>No apps are currently running.</div>`;
+                } else {
+                    output.innerHTML += `<div>--- Running Apps ---</div>`;
+                    openApps.forEach(id => {
+                        const status = state.openWindows[id].minimized ? '(Minimized)' : '(Active)';
+                        output.innerHTML += `<div>🟢 ${state.apps[id].title} ${status}</div>`;
+                    });
+                }
+            } else if (cmd === 'uptime') {
+                const diff = Math.floor((Date.now() - state.bootTime) / 1000);
+                const m = Math.floor(diff / 60);
+                const s = diff % 60;
+                output.innerHTML += `<div>System uptime: ${m} minutes, ${s} seconds.</div>`;
+            } else if (cmd === 'bounce') {
+                const winData = state.openWindows['terminal'];
+                if (winData) {
+                    const win = winData.element;
+                    win.style.animation = 'none';
+                    void win.offsetWidth;
+                    win.style.animation = 'windowPop 0.5s infinite alternate cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                    setTimeout(() => win.style.animation = 'none', 3000);
+                }
+                output.innerHTML += `<div>Bouncing! Boing!</div>`;
+            }
+            else if (cmd !== '') {
+                output.innerHTML += `<div>Command not found: ${cmd}. Type 'help' for available commands.</div>`;
             }
 
             input.value = '';
@@ -1753,6 +1863,7 @@ function renderSettings(container) {
                 removeBtn.addEventListener('click', () => {
                     document.documentElement.style.setProperty('--wallpaper', '#ffffff');
                     try { localStorage.removeItem('looney_wallpaper'); } catch (e) { }
+                    try { localStorage.removeItem("wallpaper"); } catch (e) { }
                 });
             }
 
@@ -2870,4 +2981,4 @@ window.addEventListener('error', (e) => {
     console.error("Global Error:", e.message);
 });
 
-window.addEventListener('load', runBoot);
+window.addEventListener('load', runBoot);a
