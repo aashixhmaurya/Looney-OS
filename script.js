@@ -2847,7 +2847,7 @@ function renderSnake(container) {
                 nextDx = -1; nextDy = 0; 
             }
         } else {
-            if (deltaY > 0 && dy !== -1) { 
+            if (deltaY > 0 && dy !== -1) {  
                 nextDx = 0; nextDy = 1; 
             }
             else if (deltaY < 0 && dy !== 1) { 

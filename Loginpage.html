@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -6,21 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Looney OS - Login</title>
 
+    ```
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    ```
 
 </head>
 
 <body class="min-h-screen bg-[#f7f7f7] flex items-center justify-center p-4 font-sans">
 
+    ```
     <div class="max-w-sm w-full bg-white rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] p-10 flex flex-col items-center space-y-14">
 
         <div class="flex flex-col items-center justify-center w-full mt-4">
-
             <svg width="80" height="60" viewBox="0 0 120 80" fill="none" class="mb-4">
-          <path d="M 20 10 L 20 60 C 20 65 25 70 30 70 L 80 70 C 85 70 90 65 90 60 L 90 40 C 90 35 85 30 80 30 C 75 30 70 35 70 40 L 70 50 L 40 50 L 40 10 C 40 5 35 0 30 0 C 25 0 20 5 20 10 Z" fill="#1a1a1a"/>
-          <circle cx="100" cy="15" r="8" fill="#1a1a1a" />
-       </svg>
+            <path d="M 20 10 L 20 60 C 20 65 25 70 30 70 L 80 70 C 85 70 90 65 90 60 L 90 40 C 90 35 85 30 80 30 C 75 30 70 35 70 40 L 70 50 L 40 50 L 40 10 C 40 5 35 0 30 0 C 25 0 20 5 20 10 Z" fill="#1a1a1a"/>
+            <circle cx="100" cy="15" r="8" fill="#1a1a1a" />
+        </svg>
 
             <h1 class="text-5xl text-black" style="font-family: 'Times New Roman', serif;">
                 LOONEY OS
@@ -29,38 +32,28 @@
 
         <div class="w-full space-y-4">
 
-            <!-- GOOGLE BUTTON WITH LOGO -->
             <button id="googleBtn" class="w-full flex items-center justify-center py-4 px-4 border-2 border-gray-100 text-sm font-semibold rounded-2xl text-gray-700 bg-white hover:bg-gray-50">
-        
-        <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-
-        Continue with Google
-      </button>
+            <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
+        </button>
 
             <button id="guestBtn" class="w-full py-4 px-4 text-sm font-semibold rounded-2xl text-white bg-black">
-        Continue as Guest →
-      </button>
+            Continue as Guest →
+        </button>
 
         </div>
     </div>
 
     <script>
         function handleCredentialResponse(response) {
-            const data = parseJwt(response.credential);
+            const data = JSON.parse(atob(response.credential.split('.')[1]));
             localStorage.setItem("user", JSON.stringify(data));
             window.location.href = "index.html";
-        }
-
-        function parseJwt(token) {
-            let base64Url = token.split('.')[1];
-            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            let jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-            return JSON.parse(jsonPayload);
         }
 
         window.onload = function() {
@@ -69,27 +62,29 @@
                 callback: handleCredentialResponse
             });
 
-            document.getElementById('googleBtn').onclick = function() {
-                let div = document.createElement("div");
-                div.style.display = "none";
-                document.body.appendChild(div);
+            // hidden official button
+            const hiddenDiv = document.createElement("div");
+            hiddenDiv.style.display = "none";
+            document.body.appendChild(hiddenDiv);
 
-                google.accounts.id.renderButton(div, {
-                    theme: "outline",
-                    size: "large"
-                });
+            google.accounts.id.renderButton(hiddenDiv, {
+                theme: "outline",
+                size: "large"
+            });
 
-                setTimeout(() => {
-                    const btn = div.querySelector("div[role=button]");
-                    if (btn) btn.click();
-                }, 100);
+            // trigger it on click
+            document.getElementById("googleBtn").onclick = () => {
+                const btn = hiddenDiv.querySelector("div[role=button]");
+                if (btn) btn.click();
             };
 
-            document.getElementById('guestBtn').onclick = function() {
+            document.getElementById("guestBtn").onclick = () => {
+                localStorage.setItem("user", "guest");
                 window.location.href = "index.html";
             };
         };
     </script>
+    ```
 
 </body>
 
