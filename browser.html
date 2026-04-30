@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Looney Browser</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="browser.css">
+</head>
+
+<body>
+    <div class="app-browser">
+        <div class="browser-toolbar">
+            <button class="browser-nav-btn b-back" title="Go Back">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+            <button class="browser-nav-btn b-fwd" title="Go Forward">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+            <button class="browser-nav-btn b-refresh" title="Refresh">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+            </button>
+            <button class="browser-nav-btn b-home" title="Home">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </button>
+            <input type="text" class="browser-input" placeholder="Search Google or enter web address..." value="">
+            <button class="b-go" style="padding: 2px 15px; font-size: 0.95rem;">Go</button>
+            <button class="b-ext" style="padding: 2px 10px; font-size: 0.95rem; margin-left: 5px; display: flex; align-items: center; justify-content: center;" title="Open in New Tab">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </button>
+        </div>
+        <div style="font-size: 0.75rem; text-align: center; padding: 3px; background: #f0f0f0; border-bottom: 2px solid #000; color: #000; font-weight: bold;">
+            Note: If a site refuses to connect, click the <svg viewBox="0 0 24 24" width="12" height="12" style="vertical-align: middle; margin: 0 2px;" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>            icon to open it safely!
+        </div>
+        <div style="flex: 1; position: relative; background: #fff;">
+            <iframe class="browser-iframe" src="https://www.google.com/webhp?igu=1" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
+        </div>
+    </div>
+
+    <script src="browser.js"></script>
+</body>
+
+</html>

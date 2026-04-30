@@ -4,12 +4,13 @@ const icons = {
     music: `<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`,
     notepad: `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`,
     calendar: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`,
-    settings: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`,
+    settings: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`,
     calc: `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line><line x1="12" y1="8" x2="12" y2="16"></line></svg>`,
     doodle: `<svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>`,
     games: `<svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"></path><rect x="8" y="9" width="8" height="6" rx="2" fill="none" stroke="currentColor" stroke-width="2"></rect><circle cx="10.5" cy="12" r="0.5" fill="currentColor"></circle><circle cx="13.5" cy="12" r="0.5" fill="currentColor"></circle></svg>`,
     game: `<svg viewBox="0 0 24 24"><rect x="9" y="16" width="6" height="6" rx="1"></rect><circle cx="11" cy="18" r="0.5" fill="currentColor" stroke="none"></circle><circle cx="13" cy="18" r="0.5" fill="currentColor" stroke="none"></circle><rect x="3" y="3" width="6" height="6" rx="1"></rect><line x1="3" y1="3" x2="9" y2="9"></line><line x1="9" y1="3" x2="3" y2="9"></line><rect x="14" y="7" width="6" height="6" rx="1"></rect><line x1="14" y1="7" x2="20" y2="13"></line><line x1="20" y1="7" x2="14" y2="13"></line></svg>`,
-    snake: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16h5v-6h6v3h5"></path><circle cx="20" cy="13" r="1.5" fill="currentColor"></circle><path d="M19 13h1"></path></svg>`
+    snake: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16h5v-6h6v3h5"></path><circle cx="20" cy="13" r="1.5" fill="currentColor"></circle><path d="M19 13h1"></path></svg>`,
+    browser: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"></circle><ellipse cx="12" cy="12" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="2"></ellipse><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2"></line></svg>`
 };
 
 const state = {
@@ -17,6 +18,7 @@ const state = {
         files: { id: 'files', title: 'My Files', icon: icons.files, color: 'var(--yellow)' },
         doodle: { id: 'doodle', title: 'Doodle Pad', icon: icons.doodle, color: 'var(--purple)' },
         calc: { id: 'calc', title: 'Calculator', icon: icons.calc, color: 'var(--green)' },
+        browser: { id: 'browser', title: 'Browser', icon: icons.browser, color: 'var(--black)' },
         terminal: { id: 'terminal', title: 'Terminal', icon: icons.terminal, color: 'var(--black)' },
         music: { id: 'music', title: 'Music Player', icon: icons.music, color: 'var(--orange)' },
         notepad: { id: 'notepad', title: 'Notes', icon: icons.notepad, color: 'var(--blue)' },
@@ -72,14 +74,9 @@ function applyWallpaperFromFile(file) {
 
     reader.onload = function(event) {
         const dataUrl = event.target.result;
-
-        // 🔥 APPLY WALLPAPER
         document.documentElement.style.setProperty('--wallpaper', `url(${dataUrl})`);
-
-        // 💾 SAVE
         localStorage.setItem("looney_wallpaper", dataUrl);
         localStorage.setItem("wallpaper", dataUrl);
-
         console.log("Wallpaper Applied ✅");
     };
 
@@ -93,13 +90,8 @@ document.addEventListener("dragover", (e) => {
 }, true);
 
 document.addEventListener("drop", (e) => {
-    const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (!file) return;
-
-    // ONLY FOR IMAGE
-    if (file.type.startsWith("image/")) {
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         e.preventDefault();
-        applyWallpaperFromFile(file);
     }
 }, true);
 
@@ -322,6 +314,9 @@ function makeIconDraggable(iconElement, appId) {
         isDragging = false;
         iconElement.style.transition = 'none';
 
+        // Disable pointer events on all iframes so mouse doesn't get lost
+        document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = 'none');
+
         document.addEventListener('mousemove', handleMove, { passive: false });
         document.addEventListener('touchmove', handleMove, { passive: false });
         document.addEventListener('mouseup', handleUp);
@@ -377,7 +372,7 @@ function makeIconDraggable(iconElement, appId) {
             let el = document.elementFromPoint(currentX, currentY);
             if (el) {
                 let target = el.closest('.desktop-icon:not(.placeholder)');
-                if (target && target !== iconElement) {
+                if (target && target !== iconElement && target.style.position !== 'absolute') {
                     droppedOnGrid = true;
                     if (!placeholder) {
                         placeholder = document.createElement('div');
@@ -393,7 +388,7 @@ function makeIconDraggable(iconElement, appId) {
                     } else {
                         target.parentNode.insertBefore(placeholder, target.nextSibling);
                     }
-                } else if (el.id === 'desktop' || el.id === 'desktop-icons') {
+                } else if (el.id === 'desktop' || el.id === 'desktop-icons' || (target && target.style.position === 'absolute')) {
                     droppedOnGrid = false;
                     if (placeholder && placeholder.parentNode) {
                         placeholder.remove();
@@ -408,6 +403,9 @@ function makeIconDraggable(iconElement, appId) {
         document.removeEventListener('touchmove', handleMove);
         document.removeEventListener('mouseup', handleUp);
         document.removeEventListener('touchend', handleUp);
+
+        // Re-enable pointer events on all iframes
+        document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = '');
 
         if (isDragging) {
             iconElement.style.zIndex = '1';
@@ -449,10 +447,10 @@ function makeIconDraggable(iconElement, appId) {
                 document.querySelectorAll('.desktop-icon').forEach(otherIcon => {
                     if (otherIcon !== iconElement && !otherIcon.classList.contains('placeholder')) {
                         const otherRect = otherIcon.getBoundingClientRect();
-                        if (myRect.left < otherRect.right - 20 &&
-                            myRect.right > otherRect.left + 20 &&
-                            myRect.top < otherRect.bottom - 20 &&
-                            myRect.bottom > otherRect.top + 20) {
+                        if (myRect.left < otherRect.right - 10 &&
+                            myRect.right > otherRect.left + 10 &&
+                            myRect.top < otherRect.bottom - 10 &&
+                            myRect.bottom > otherRect.top + 10) {
                             isOverlapping = true;
                         }
                     }
@@ -696,6 +694,9 @@ function updateTaskbar() {
             }
             isDragging = false;
 
+            // Disable pointer events on all iframes so mouse doesn't get lost
+            document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = 'none');
+
             document.addEventListener('mousemove', handlePointerMove);
             document.addEventListener('touchmove', handlePointerMove, { passive: false });
             document.addEventListener('mouseup', handlePointerUp);
@@ -745,6 +746,9 @@ function updateTaskbar() {
             document.removeEventListener('touchmove', handlePointerMove);
             document.removeEventListener('mouseup', handlePointerUp);
             document.removeEventListener('touchend', handlePointerUp);
+
+            // Re-enable pointer events on all iframes
+            document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = '');
 
             const indClose = document.getElementById('indicator-close');
             indClose.classList.remove('active');
@@ -799,6 +803,12 @@ function makeDraggable(element, handle, appId) {
 
     function dragStart(e) {
         e.preventDefault();
+
+        // Disable pointer events on all iframes globally during drag
+        document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = 'none');
+
+        const contentWindow = element.querySelector('.window-content');
+        if (contentWindow) contentWindow.style.pointerEvents = 'none';
 
         if (element.classList.contains('maximized')) {
             element.classList.remove('maximized');
@@ -886,6 +896,12 @@ function makeDraggable(element, handle, appId) {
 
         element.style.transition = '';
 
+        // Re-enable pointer events on all iframes
+        document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = '');
+
+        const contentWindow = element.querySelector('.window-content');
+        if (contentWindow) contentWindow.style.pointerEvents = '';
+
         document.getElementById('indicator-max').classList.remove('active');
         document.getElementById('indicator-close').classList.remove('active');
         document.getElementById('taskbar').classList.remove('drag-over');
@@ -909,6 +925,12 @@ function makeResizable(element, handle, appId) {
     function initResize(e) {
         e.preventDefault();
         e.stopPropagation();
+
+        // Disable pointer events on all iframes globally during resize
+        document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = 'none');
+
+        const contentWindow = element.querySelector('.window-content');
+        if (contentWindow) contentWindow.style.pointerEvents = 'none';
 
         if (e.type === 'touchstart') {
             startX = e.touches[0].clientX;
@@ -971,6 +993,12 @@ function makeResizable(element, handle, appId) {
 
         element.style.transition = '';
 
+        // Re-enable pointer events on all iframes
+        document.querySelectorAll('iframe').forEach(ifr => ifr.style.pointerEvents = '');
+
+        const contentWindow = element.querySelector('.window-content');
+        if (contentWindow) contentWindow.style.pointerEvents = '';
+
         windowSizes[appId] = {
             width: parseInt(element.style.width, 10),
             height: parseInt(element.style.height, 10)
@@ -993,6 +1021,9 @@ function populateAppContent(appId, container) {
                 break;
             case 'terminal':
                 renderTerminal(container);
+                break;
+            case 'browser':
+                renderBrowser(container);
                 break;
             case 'files':
                 renderFiles(container);
@@ -1139,20 +1170,20 @@ function renderFiles(container) {
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
             Array.from(e.dataTransfer.files).forEach(file => {
                 if (currentPath === '/Pictures' && !file.type.startsWith('image/')) {
-                    alert('🚫 Hold on! Only photos here.');
+                    alert('Hold on! Only photos here.');
                     return;
                 }
                 if (currentPath === '/Music' && !file.type.startsWith('audio/')) {
-                    alert('🚫 Hold on! Only audio files here.');
+                    alert('Hold on! Only audio files here.');
                     return;
                 }
                 if (currentPath === '/Videos' && !file.type.startsWith('video/')) {
-                    alert('🚫 Hold on! Only video files here.');
+                    alert('Hold on! Only video files here.');
                     return;
                 }
 
                 if (file.size > 10 * 1024 * 1024) {
-                    alert("File too large 🚫");
+                    alert(`File too large <svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align: text-bottom; margin-left: 4px;" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>`);
                     return;
                 }
 
@@ -1166,10 +1197,6 @@ function renderFiles(container) {
                 else if (isVideo) fileIcon = fileIcons.video;
 
                 if (isVideo || isAudio || file.size > 5 * 1024 * 1024) {
-                    if (state.currentBlobUrl) {
-                        URL.revokeObjectURL(state.currentBlobUrl);
-                        state.currentBlobUrl = null;
-                    }
                     const blobUrl = URL.createObjectURL(file);
                     state.currentBlobUrls.push(blobUrl);
                     const newItem = {
@@ -1204,12 +1231,94 @@ function renderFiles(container) {
         }
     });
 
+    function promptHiddenPassword(onSuccess) {
+        let contentDiv = container.querySelector('.files-content-wrapper');
+        let savedPwd = localStorage.getItem('looney_hidden_pwd');
+
+        const pwdOverlay = document.createElement('div');
+        pwdOverlay.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); z-index:100; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;';
+
+        const title = document.createElement('h3');
+        title.innerHTML = savedPwd ? 'Enter Hidden Password' : 'Set 7-Digit Password';
+        title.style.marginBottom = '15px';
+
+        const pwdInput = document.createElement('input');
+        pwdInput.type = 'password';
+        pwdInput.maxLength = 7;
+        pwdInput.className = 'new-folder-input';
+        pwdInput.style.width = '150px';
+        pwdInput.style.fontSize = '1.2rem';
+        pwdInput.style.letterSpacing = '5px';
+        pwdInput.placeholder = '*******';
+
+        const btnRow = document.createElement('div');
+        btnRow.style.cssText = 'display:flex; gap:10px; margin-top:15px;';
+
+        const submitBtn = document.createElement('button');
+        submitBtn.className = 'looney-btn';
+        submitBtn.style.padding = '5px 15px';
+        submitBtn.innerHTML = 'Submit';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'looney-btn';
+        cancelBtn.style.padding = '5px 15px';
+        cancelBtn.innerHTML = 'Cancel';
+
+        btnRow.appendChild(submitBtn);
+        btnRow.appendChild(cancelBtn);
+
+        pwdOverlay.appendChild(title);
+        pwdOverlay.appendChild(pwdInput);
+        pwdOverlay.appendChild(btnRow);
+        contentDiv.appendChild(pwdOverlay);
+
+        pwdInput.focus();
+
+        pwdInput.onkeydown = (e) => {
+            if (e.key === 'Enter') submitBtn.click();
+        };
+
+        cancelBtn.onclick = () => pwdOverlay.remove();
+
+        submitBtn.onclick = () => {
+            const val = pwdInput.value;
+            if (!/^\d{7}$/.test(val)) {
+                alert('Please enter exactly 7 digits!');
+                pwdInput.value = '';
+                pwdInput.focus();
+                return;
+            }
+            if (!savedPwd) {
+                localStorage.setItem('looney_hidden_pwd', val);
+                pwdOverlay.remove();
+                onSuccess();
+            } else {
+                if (val === savedPwd) {
+                    pwdOverlay.remove();
+                    onSuccess();
+                } else {
+                    alert(`Incorrect Password! <svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align: text-bottom; margin-left: 4px;" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`);
+                    pwdInput.value = '';
+                    pwdInput.focus();
+                }
+            }
+        };
+    }
+
     function openItem(item) {
         if (state.currentBlobUrl) {
             URL.revokeObjectURL(state.currentBlobUrl);
             state.currentBlobUrl = null;
         }
         if (item.type === 'folder') {
+            if (item.id === 'hidden') {
+                promptHiddenPassword(() => {
+                    currentPath = currentPath === '/' ? '/' + item.name : currentPath + '/' + item.name;
+                    selectedItems.clear();
+                    renderView();
+                });
+                return;
+            }
             currentPath = currentPath === '/' ? '/' + item.name : currentPath + '/' + item.name;
             selectedItems.clear();
             renderView();
@@ -1235,7 +1344,7 @@ function renderFiles(container) {
             let mediaHtml = '<div style="padding: 20px; font-weight: bold;">Cannot preview this file type natively.</div>';
 
             if (isImgData) {
-                mediaHtml = `<img src="${item.data}" style="max-width:90%; max-height:90%; border:4px solid var(--black); border-radius:4px; box-shadow:6px 6px 0px var(--black); object-fit:contain;">`;
+                mediaHtml = `<img id="preview-img" src="${item.data}" style="max-width:90%; max-height:90%; border:4px solid var(--black); border-radius:4px; box-shadow:6px 6px 0px var(--black); object-fit:contain; cursor: grab; transition: transform 0.1s ease-out;">`;
             } else if (isVidData) {
                 mediaHtml = `<video src="${item.data}" controls autoplay style="max-width:90%; max-height:90%; border:4px solid var(--black); border-radius:4px; box-shadow:6px 6px 0px var(--black); background: #000;"></video>`;
             }
@@ -1245,14 +1354,85 @@ function renderFiles(container) {
                     <button class="looney-btn back-btn" style="padding: 2px 8px; font-size: 0.8rem;">◀ Back</button>
                     <div class="files-path">${item.name}</div>
                 </div>
-                <div style="flex:1; display:flex; align-items:center; justify-content:center; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.03) 10px, rgba(0,0,0,0.03) 12px); overflow:hidden; position:relative;">
+                <div id="preview-area" style="flex:1; display:flex; align-items:center; justify-content:center; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.03) 10px, rgba(0,0,0,0.03) 12px); overflow:hidden; position:relative;">
                     ${mediaHtml}
                 </div>
             `;
+
             contentDiv.querySelector('.back-btn').onclick = () => {
                 selectedItems.clear();
                 renderView();
             };
+
+            if (isImgData) {
+                const img = contentDiv.querySelector('#preview-img');
+                const viewArea = contentDiv.querySelector('#preview-area');
+                let scale = 1,
+                    panX = 0,
+                    panY = 0;
+                let isDraggingImg = false,
+                    startX, startY;
+
+                viewArea.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const zoomFactor = 1.1;
+                    if (e.deltaY < 0) scale *= zoomFactor;
+                    else scale /= zoomFactor;
+                    scale = Math.max(0.2, Math.min(scale, 10));
+                    img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+                });
+
+                img.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    isDraggingImg = true;
+                    startX = e.clientX - panX;
+                    startY = e.clientY - panY;
+                    img.style.cursor = 'grabbing';
+                    img.style.transition = 'none';
+                });
+
+                viewArea.addEventListener('mousemove', (e) => {
+                    if (!isDraggingImg) return;
+                    e.preventDefault();
+                    panX = e.clientX - startX;
+                    panY = e.clientY - startY;
+                    img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+                });
+
+                viewArea.addEventListener('mouseup', () => {
+                    isDraggingImg = false;
+                    img.style.cursor = 'grab';
+                    img.style.transition = 'transform 0.1s ease-out';
+                });
+
+                viewArea.addEventListener('mouseleave', () => {
+                    isDraggingImg = false;
+                    img.style.cursor = 'grab';
+                    img.style.transition = 'transform 0.1s ease-out';
+                });
+
+                img.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 1) {
+                        isDraggingImg = true;
+                        startX = e.touches[0].clientX - panX;
+                        startY = e.touches[0].clientY - panY;
+                        img.style.transition = 'none';
+                    }
+                }, { passive: false });
+
+                viewArea.addEventListener('touchmove', (e) => {
+                    if (!isDraggingImg || e.touches.length !== 1) return;
+                    e.preventDefault();
+                    panX = e.touches[0].clientX - startX;
+                    panY = e.touches[0].clientY - startY;
+                    img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+                }, { passive: false });
+
+                viewArea.addEventListener('touchend', () => {
+                    isDraggingImg = false;
+                    img.style.transition = 'transform 0.1s ease-out';
+                });
+            }
         }
     }
 
@@ -1309,7 +1489,7 @@ function renderFiles(container) {
                 toolbar.innerHTML = `
                     <span style="font-weight:bold; font-size: 0.9rem; margin-right: auto;">${selectedItems.size} selected</span>
                     <button class="looney-btn" id="tb-restore" style="padding: 4px 10px; font-size: 0.85rem;">✨ Recover</button>
-                    <button class="looney-btn" id="tb-perm-del" style="padding: 4px 10px; font-size: 0.85rem; color: var(--red);">🗑️ Delete</button>
+                    <button class="looney-btn" id="tb-perm-del" style="padding: 4px 10px; font-size: 0.85rem; color: var(--black);">🗑️ Delete</button>
                 `;
             } else {
                 toolbar.innerHTML = `
@@ -1334,6 +1514,8 @@ function renderFiles(container) {
                     renderView();
                 };
                 toolbar.querySelector('#tb-perm-del').onclick = () => {
+                    state.currentBlobUrls.forEach(url => URL.revokeObjectURL(url));
+                    state.currentBlobUrls = [];
                     customItems = customItems.filter(i => !selectedItems.has(i.id));
                     localStorage.setItem('looney_fs_items', JSON.stringify(customItems));
                     selectedItems.clear();
@@ -1382,42 +1564,77 @@ function renderFiles(container) {
                     headerRow.appendChild(closeBtn);
 
                     const folderList = document.createElement('div');
-                    folderList.style.cssText = 'flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px;';
+                    folderList.style.cssText = 'flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; padding-bottom: 20px;';
 
-                    const subFolders = customItems.filter(i => i.type === 'folder' && i.path === currentPath && !i.deleted);
+                    const dests = [];
+                    
+                    dests.push({ 
+                        label: 'Home (Root)', 
+                        targetPath: '/', 
+                        icon: `<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>` 
+                    });
 
-                    if (subFolders.length === 0) {
-                        folderList.innerHTML = '<div style="color:var(--black); font-weight:bold;">No folders available here to move into. First create a new folder!</div>';
-                    } else {
-                        let hasValidFolders = false;
-                        subFolders.forEach(folder => {
-                            if (selectedItems.has(folder.id)) return;
-
-                            hasValidFolders = true;
-                            const fItem = document.createElement('div');
-                            fItem.style.cssText = 'padding:10px; border:2px solid var(--black); border-radius:var(--radius-sm); cursor:pointer; font-weight:bold; background:var(--white); box-shadow:2px 2px 0px var(--black); display:flex; align-items:center; gap:10px; transition:transform 0.1s;';
-                            fItem.innerHTML = `<svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> ${folder.name}`;
-
-                            fItem.onmouseenter = () => fItem.style.transform = 'translate(-2px, -2px)';
-                            fItem.onmouseleave = () => fItem.style.transform = 'none';
-
-                            fItem.onclick = () => {
-                                const newPath = currentPath === '/' ? '/' + folder.name : currentPath + '/' + folder.name;
-                                selectedItems.forEach(id => {
-                                    const itm = customItems.find(i => i.id === id);
-                                    if (itm) itm.path = newPath;
-                                });
-                                try { localStorage.setItem('looney_fs_items', JSON.stringify(customItems)); } catch (e) { }
-                                selectedItems.clear();
-                                moveOverlay.remove();
-                                renderView();
-                            };
-                            folderList.appendChild(fItem);
-                        });
-
-                        if (!hasValidFolders) {
-                            folderList.innerHTML = '<div style="color:var(--black); font-weight:bold;">Cannot move folders into themselves!</div>';
+                    defaultFolders.forEach(df => {
+                        if (df.id !== 'recycle' && df.id !== 'uploads') {
+                            dests.push({ label: df.name, targetPath: '/' + df.name, icon: df.icon });
                         }
+                    });
+
+                    customItems.forEach(ci => {
+                        if (ci.type === 'folder' && !ci.deleted && !selectedItems.has(ci.id)) {
+                            const tPath = ci.path === '/' ? '/' + ci.name : ci.path + '/' + ci.name;
+                            dests.push({ label: ci.name, targetPath: tPath, icon: fileIcons.generic });
+                        }
+                    });
+
+                    let hasValidFolders = false;
+                    dests.forEach(dest => {
+                        if (dest.targetPath === currentPath) return; 
+
+                        let isChild = false;
+                        selectedItems.forEach(id => {
+                            const selItem = customItems.find(i => i.id === id);
+                            if (selItem && selItem.type === 'folder') {
+                                const selPath = selItem.path === '/' ? '/' + selItem.name : selItem.path + '/' + selItem.name;
+                                if (dest.targetPath.startsWith(selPath + '/') || dest.targetPath === selPath) {
+                                    isChild = true;
+                                }
+                            }
+                        });
+                        if (isChild) return;
+
+                        hasValidFolders = true;
+                        const fItem = document.createElement('div');
+                        fItem.style.cssText = 'padding:10px; border:2px solid var(--black); border-radius:var(--radius-sm); cursor:pointer; background:var(--white); box-shadow:2px 2px 0px var(--black); display:flex; align-items:center; gap:12px; transition:transform 0.1s;';
+                        
+                        fItem.innerHTML = `
+                            <div style="width:24px;height:24px;fill:none;stroke:var(--black);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:flex;align-items:center;justify-content:center;">
+                                ${dest.icon}
+                            </div>
+                            <div style="display:flex; flex-direction:column; text-align:left;">
+                                <span style="font-weight:bold; font-size:1rem;">${dest.label}</span>
+                                <span style="font-size:0.75rem; font-weight:normal; opacity:0.7; margin-top:2px;">${dest.targetPath}</span>
+                            </div>
+                        `;
+
+                        fItem.onmouseenter = () => fItem.style.transform = 'translate(-2px, -2px)';
+                        fItem.onmouseleave = () => fItem.style.transform = 'none';
+
+                        fItem.onclick = () => {
+                            selectedItems.forEach(id => {
+                                const itm = customItems.find(i => i.id === id);
+                                if (itm) itm.path = dest.targetPath;
+                            });
+                            try { localStorage.setItem('looney_fs_items', JSON.stringify(customItems)); } catch (e) { }
+                            selectedItems.clear();
+                            moveOverlay.remove();
+                            renderView();
+                        };
+                        folderList.appendChild(fItem);
+                    });
+
+                    if (!hasValidFolders) {
+                        folderList.innerHTML = '<div style="color:var(--black); font-weight:bold; text-align:center; margin-top:20px;">No valid destinations available!</div>';
                     }
 
                     moveOverlay.appendChild(headerRow);
@@ -1562,6 +1779,8 @@ function renderFiles(container) {
         } else if (e.key === 'Delete') {
             if (selectedItems.size > 0) {
                 if (currentPath === '/Recycle Bin') {
+                    state.currentBlobUrls.forEach(url => URL.revokeObjectURL(url));
+                    state.currentBlobUrls = [];
                     customItems = customItems.filter(i => !selectedItems.has(i.id));
                 } else {
                     selectedItems.forEach(id => {
@@ -1653,6 +1872,7 @@ function renderTerminal(container) {
         'files': 'files', 'my files': 'files', 'folder': 'files',
         'doodle': 'doodle', 'doodle pad': 'doodle', 'paint': 'doodle', 'drawing': 'doodle',
         'calc': 'calc', 'calculator': 'calc', 'math': 'calc',
+        'browser': 'browser', 'web': 'browser', 'internet': 'browser',
         'terminal': 'terminal', 'cmd': 'terminal', 'command': 'terminal',
         'music': 'music', 'music player': 'music', 'audio': 'music',
         'notepad': 'notepad', 'notes': 'notepad', 'text': 'notepad',
@@ -1734,7 +1954,7 @@ function renderTerminal(container) {
                 const appId = getAppIdFromAlias(appName);
                 if (appId && state.apps[appId]) {
                     if (appId === 'terminal') {
-                        output.innerHTML += `<div><span style="color:var(--red)">[ERROR] You cannot delete the Terminal while using it!</span></div>`;
+                        output.innerHTML += `<div><span style="color:var(--black); font-weight:bold;">[ERROR] You cannot delete the Terminal while using it!</span></div>`;
                     } else {
                         if (state.openWindows[appId]) closeApp(appId);
                         const appTitle = state.apps[appId].title;
@@ -1812,6 +2032,11 @@ function renderTerminal(container) {
     });
 }
 
+function renderBrowser(container) {
+    container.className = 'window-content app-browser';
+    container.innerHTML = `<iframe src="browser.html" style="width: 100%; height: 100%; border: none; background: #fff;"></iframe>`;
+}
+
 function renderSettings(container) {
     container.className = 'window-content app-settings';
 
@@ -1871,7 +2096,7 @@ function renderSettings(container) {
 
             fileInput.addEventListener('change', (e) => {
                 if (e.target.files.length > 0) {
-                    setWallpaperFromFile(e.target.files[0]);
+                    applyWallpaperFromFile(e.target.files[0]);
                 }
             });
 
@@ -1889,7 +2114,7 @@ function renderSettings(container) {
                 e.stopPropagation();
                 dropZone.classList.remove('dragover');
                 if (e.dataTransfer.files.length > 0) {
-                    setWallpaperFromFile(e.dataTransfer.files[0]);
+                    applyWallpaperFromFile(e.dataTransfer.files[0]);
                 }
             });
 
@@ -2217,7 +2442,7 @@ function renderCalc(container) {
         if (state.activeAppId !== 'calc') return;
 
         const key = e.key;
-        const validNumbersAndOperators = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/'];
+        const validNumbersAndOperators = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '+', '-', '*', '/'];
 
         if (validNumbersAndOperators.includes(key)) {
             processInput(key);
@@ -2981,4 +3206,24 @@ window.addEventListener('error', (e) => {
     console.error("Global Error:", e.message);
 });
 
-window.addEventListener('load', runBoot);a
+window.addEventListener('load', runBoot);
+
+window.alert = function(message) {
+    let overlay = document.getElementById('looney-alert-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'looney-alert-overlay';
+        overlay.innerHTML = `
+            <div class="looney-alert-box">
+                <div class="looney-alert-msg" id="looney-alert-text"></div>
+                <button class="looney-btn" id="looney-alert-btn" style="align-self: center; padding: 5px 25px;">OK</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        document.getElementById('looney-alert-btn').addEventListener('click', () => {
+            overlay.classList.remove('active');
+        });
+    }
+    document.getElementById('looney-alert-text').innerHTML = message;
+    overlay.classList.add('active');
+};
